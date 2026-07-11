@@ -11,7 +11,7 @@ public class QuickSort {
     }
 
     //private method that does the brunt of the work and the rest of the recursion part
-    private void quickSort(StudentRecord[] students, int high, int low){
+    private void quickSort(StudentRecord[] students, int low, int high){
 
         //base case
         if (low < high){
@@ -29,7 +29,7 @@ public class QuickSort {
 
     }
 
-    private int partition(StudentRecord[] students, int high, int low){
+    private int partition(StudentRecord[] students, int low, int high){
 
         // Choose the last element as the pivot
         StudentRecord pivot = students[high];
