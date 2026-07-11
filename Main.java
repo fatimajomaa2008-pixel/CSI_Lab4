@@ -27,7 +27,7 @@ public class Main {
 
         sorter.mergeSort1(students);
 
-        System.out.println("\nAfter sorting:");
+        System.out.println("\nAfter sorting using Merge Sort:");
         for (StudentRecord student : students) {
             System.out.println(student);
         }
@@ -62,8 +62,27 @@ public class Main {
 
         sorter2.quickSort(students);
 
-        System.out.println("\nAfter sorting:");
+        System.out.println("\nAfter sorting using Quick Sort:");
         for (StudentRecord student : students) {
+            System.out.println(student);
+        }
+
+
+
+        //PART C:
+        //create object
+        HeapSort sorter3 = new HeapSort();
+
+        System.out.println("\n\n======PART C======");
+        System.out.println("Before sorting:");
+        for(StudentRecord student : students) {
+            System.out.println(student);
+        }
+
+        sorter3.heapSort(students);
+
+        System.out.println("\nAfter sorting using Heap Sort:");
+        for(StudentRecord student : students) {
             System.out.println(student);
         }
 
