@@ -104,6 +104,7 @@ public class PatternMatcher {
         return findFirst(text, pattern) != -1;
     }
 
+    // containsPattern(document, pattern): Return true if the pattern exists in the document, otherwise false.
     public boolean containsPattern(TextDocument document, String pattern) {
         if (document == null) {
             return false;
@@ -112,6 +113,7 @@ public class PatternMatcher {
         return containsPattern(document.getContent(), pattern);
     }
 
+    // Helper method to check if pattern matches at a specific position
     private boolean matchesAt(String text, String pattern, int startIndex) {
         if (text == null || pattern == null) {
             return false;
