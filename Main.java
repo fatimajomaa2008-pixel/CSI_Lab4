@@ -1,4 +1,6 @@
 public class Main {
+    public static volatile int preventDCE = 0;
+    
     public static void main(String[] args) {
 
         //create a students array with at least 10 test cases for parts A, B & C
@@ -92,34 +94,50 @@ public class Main {
             for (int size : dataSizes) {
                 StudentRecord[] testData = generateTestData(size, dataType);
                 
-                // Test Merge Sort
+                // ================== 1. MERGE SORT BENCHMARK ==================
                 StudentRecord[] data1 = testData.clone();
                 long startTime = System.nanoTime();
                 mergeSortComparison.mergeSort1(data1);
                 long mergeSortTime = System.nanoTime() - startTime;
+                // Force data flow dependency
+                if (data1.length > 0 && data1[0] != null) {
+                    preventDCE += data1[0].getStudentNumber() + (int)data1[data1.length - 1].getGrade();
+                }
                 
-                // Test Quick Sort
+                // ================== 2. QUICK SORT BENCHMARK ==================
                 StudentRecord[] data2 = testData.clone();
-                startTime = System.nanoTime();
+                long startTimeQ = System.nanoTime();
                 quickSortComparison.quickSort(data2);
-                long quickSortTime = System.nanoTime() - startTime;
+                long quickSortTime = System.nanoTime() - startTimeQ;
+                // Core fix: Force JVM to execute 500k loop iterations to compute first/last element values
+                if (data2.length > 0 && data2[0] != null) {
+                    preventDCE += data2[0].getStudentNumber() + (int)data2[data2.length - 1].getGrade();
+                }
                 
-                // Test Heap Sort
+                // ================== 3. HEAP SORT BENCHMARK ==================
                 StudentRecord[] data3 = testData.clone();
-                startTime = System.nanoTime();
+                long startTimeH = System.nanoTime();
                 heapSortComparison.heapSort(data3);
-                long heapSortTime = System.nanoTime() - startTime;
+                long heapSortTime = System.nanoTime() - startTimeH;
+                if (data3.length > 0 && data3[0] != null) {
+                    preventDCE += data3[0].getStudentNumber() + (int)data3[data3.length - 1].getGrade();
+                }
                 
-                // Test Simple Sort (Insertion Sort)
+                // ================== 4. SIMPLE SORT BENCHMARK ==================
                 StudentRecord[] data4 = testData.clone();
-                startTime = System.nanoTime();
+                long startTimeS = System.nanoTime();
                 simpleSort.sortByGrade(data4);
-                long simpleSortTime = System.nanoTime() - startTime;
+                long simpleSortTime = System.nanoTime() - startTimeS;
+                if (data4.length > 0 && data4[0] != null) {
+                    preventDCE += data4[0].getStudentNumber() + (int)data4[data4.length - 1].getGrade();
+                }
                 
                 System.out.printf("%-15s %-15d %-20d %-20d %-20d %-20d%n", 
                                   dataType, size, mergeSortTime, quickSortTime, heapSortTime, simpleSortTime);
             }
         }
+        // Output this value at the end of the loop to ensure the variable is not eliminated by JIT
+        System.out.println("[Anti-DCE Verification Hash: " + preventDCE + "]");
 
         // Testing sorting by different keys
         System.out.println("\n\n--- Testing Sorting by Different Keys ---");
@@ -275,10 +293,13 @@ public class Main {
         // TEST: Empty pattern (edge case)
         System.out.println("\nPattern: \"\" (empty pattern)");
         System.out.println("findFirst result: " + matcher.findFirst(doc1, ""));
+        System.out.println("findAll results: " + matcher.findAll(doc1, ""));
+        System.out.println("countOccurrences result: " + matcher.countOccurrences(doc1, ""));
         
         // TEST: Both empty text and empty pattern (edge case)
         System.out.println("\nBoth text and pattern are empty");
         System.out.println("findFirst result: " + matcher.findFirst(emptyDoc, ""));
+        System.out.println("findAll results: " + matcher.findAll(emptyDoc, ""));
         System.out.println("countOccurrences result: " + matcher.countOccurrences(emptyDoc, ""));
         
         // TEST: Pattern longer than text (edge case)
