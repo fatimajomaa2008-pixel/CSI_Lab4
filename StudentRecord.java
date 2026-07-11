@@ -48,7 +48,7 @@ public class StudentRecord {
 
     //toString method 
     public String toString(){
-        return studentNumber + "->" + name + "|" + grade + "|" + submissionTime;
+        return studentNumber + " -> " + name + " | " + grade + " | " + submissionTime;
     }
 
 }
