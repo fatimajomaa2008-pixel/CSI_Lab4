@@ -229,7 +229,7 @@ public class Main {
         TextDocument overlapDoc = new TextDocument(5, "Overlap Test", "aaaa bbbb cccc");
         
         // Array of test patterns to demonstrate different cases
-        String[] testPatterns = {"data", "pattern", "xyz", "a", "data structures", "", "ing"};
+        //String[] testPatterns = {"data", "pattern", "xyz", "a", "data structures", "", "ing"};
         
         
         // TEST: Pattern appears with TRUE OVERLAPPING OCCURRENCES ("aa" appears 3 times in "aaaa" at positions [0, 1, 2])
